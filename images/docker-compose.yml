@@ -1,0 +1,22 @@
+services:
+  database:
+    build: ./db/
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sensor
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testuser
+    ports:
+      - "3306:3306"
+  server:
+    build:
+      context: ../
+      args:
+        environmentParam: dev
+    depends_on:
+      - database
+    ports:
+      - "8090:8090"
+      - "5005:5005"
+    environment:
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n
