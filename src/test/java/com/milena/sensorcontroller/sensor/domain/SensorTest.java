@@ -74,4 +74,20 @@ public class SensorTest {
         sensor.addMeasurement(measurement);
         Assert.assertEquals(Sensor.SensorStatus.OK, sensor.getStatus());
     }
+
+    @Test
+    public void When_AddHighMeasurement_ThenStatusWarm() {
+        String uuid = UUIDFactory.create();
+        Date now = new Date();
+        Measurement measurement = Measurement.builder()
+                .carbonDioxideLevel(3000)
+                .time(now)
+                .build();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+
+        sensor.addMeasurement(measurement);
+        Assert.assertEquals(Sensor.SensorStatus.WARM, sensor.getStatus());
+    }
 }

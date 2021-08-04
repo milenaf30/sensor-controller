@@ -23,17 +23,23 @@ public class Sensor extends BaseEntity<Integer> {
     @Column
     private String uuid;
 
+    @Transient
+    @Builder.Default
+    private SensorStatus status = SensorStatus.OK;
+
     @Override
     protected Integer getBusinessKey() {
         return id;
     }
 
     public SensorStatus getStatus() {
-        return SensorStatus.OK;
+        return status;
     }
 
     public void addMeasurement(Measurement measurement) {
-
+        if (measurement.getCarbonDioxideLevel() > 2000) {
+            status = SensorStatus.WARM;
+        }
     }
 
     public enum SensorStatus {
