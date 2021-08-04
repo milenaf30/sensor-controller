@@ -1,6 +1,7 @@
 package com.milena.sensorcontroller.measurement.domain;
 
 import com.milena.sensorcontroller.common.domain.BaseEntity;
+import com.milena.sensorcontroller.sensor.domain.Sensor;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,8 +21,9 @@ public class Measurement extends BaseEntity<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
-    private Integer sensorId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sensor_id")
+    private Sensor sensor;
 
     @Column
     private Date time;

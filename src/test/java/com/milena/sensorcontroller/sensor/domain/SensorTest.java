@@ -90,4 +90,39 @@ public class SensorTest {
         sensor.addMeasurement(measurement);
         Assert.assertEquals(Sensor.SensorStatus.WARM, sensor.getStatus());
     }
+
+    @Test
+    public void When_AddTwoHighMeasurement_ThenStatusWarm() {
+        String uuid = UUIDFactory.create();
+        Date now = new Date();
+        Measurement measurement = Measurement.builder()
+                .carbonDioxideLevel(3000)
+                .time(now)
+                .build();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+
+        sensor.addMeasurement(measurement);
+        sensor.addMeasurement(measurement);
+        Assert.assertEquals(Sensor.SensorStatus.WARM, sensor.getStatus());
+    }
+
+    @Test
+    public void When_AddThreeHighMeasurement_ThenStatusALERT() {
+        String uuid = UUIDFactory.create();
+        Date now = new Date();
+        Measurement measurement = Measurement.builder()
+                .carbonDioxideLevel(3000)
+                .time(now)
+                .build();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+
+        sensor.addMeasurement(measurement);
+        sensor.addMeasurement(measurement);
+        sensor.addMeasurement(measurement);
+        Assert.assertEquals(Sensor.SensorStatus.ALERT, sensor.getStatus());
+    }
 }

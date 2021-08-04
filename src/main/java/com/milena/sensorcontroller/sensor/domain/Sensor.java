@@ -5,6 +5,8 @@ import com.milena.sensorcontroller.measurement.domain.Measurement;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,6 +25,10 @@ public class Sensor extends BaseEntity<Integer> {
     @Column
     private String uuid;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Measurement> measurements = new ArrayList<>();
+
     @Transient
     @Builder.Default
     private SensorStatus status = SensorStatus.OK;
@@ -37,8 +43,30 @@ public class Sensor extends BaseEntity<Integer> {
     }
 
     public void addMeasurement(Measurement measurement) {
-        if (measurement.getCarbonDioxideLevel() > 2000) {
+
+        //measurement 3
+
+        if (status == SensorStatus.OK && measurement.getCarbonDioxideLevel() > 2000) {
             status = SensorStatus.WARM;
+            measurements.add(measurement);
+            return;
+        }
+
+        if (measurements.size() < 2) {
+            //state shouldn't change
+            measurements.add(measurement);
+            return;
+        }
+
+        Measurement measurement1 = measurements.get(1);
+        Measurement measurement2 = measurements.get(0);
+
+        if (measurement.getCarbonDioxideLevel() > 2000 &&
+                measurement1.getCarbonDioxideLevel() > 2000 &&
+                measurement2.getCarbonDioxideLevel() > 2000
+        ) {
+            status = SensorStatus.ALERT;
+            measurements.add(measurement);
         }
     }
 
