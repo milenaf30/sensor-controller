@@ -1,10 +1,7 @@
 package com.milena.sensorcontroller.measurement.domain;
 
 import com.milena.sensorcontroller.common.domain.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "measurements")
+@EqualsAndHashCode(callSuper = true)
 public class Measurement extends BaseEntity<Long> {
 
     @Column

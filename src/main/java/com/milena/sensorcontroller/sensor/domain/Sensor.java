@@ -1,10 +1,7 @@
 package com.milena.sensorcontroller.sensor.domain;
 
 import com.milena.sensorcontroller.common.domain.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,6 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "sensors")
+@EqualsAndHashCode(callSuper = true)
 public class Sensor extends BaseEntity<Long> {
 
     @Column
