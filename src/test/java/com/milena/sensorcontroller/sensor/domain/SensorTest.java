@@ -1,10 +1,9 @@
 package com.milena.sensorcontroller.sensor.domain;
 
+import com.milena.sensorcontroller.common.uuid.UUIDFactory;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.UUID;
 
 @SpringBootTest(classes = Sensor.class)
 public class SensorTest {
@@ -39,7 +38,7 @@ public class SensorTest {
 
     @Test
     public void When_CreateEntity_ThenCorrect() {
-        String uuid = UUID.randomUUID().toString();
+        String uuid = UUIDFactory.create();
         Sensor sensor = Sensor.builder()
                 .uuid(uuid)
                 .build();
