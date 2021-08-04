@@ -19,7 +19,6 @@ public class SensorRepositoryTest {
     @Autowired
     private SensorRepository sensorRepository;
 
-
     @Test
     public void When_InsertDependencies_ThenCorrect() {
         Assert.assertNotNull(sensorRepository);
