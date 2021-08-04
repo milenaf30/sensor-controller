@@ -1,6 +1,7 @@
 package com.milena.sensorcontroller.sensor.domain;
 
 import com.milena.sensorcontroller.common.domain.BaseEntity;
+import com.milena.sensorcontroller.measurement.domain.Measurement;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,6 +30,10 @@ public class Sensor extends BaseEntity<Integer> {
 
     public SensorStatus getStatus() {
         return SensorStatus.OK;
+    }
+
+    public void addMeasurement(Measurement measurement) {
+
     }
 
     public enum SensorStatus {

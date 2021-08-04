@@ -1,9 +1,12 @@
 package com.milena.sensorcontroller.sensor.domain;
 
 import com.milena.sensorcontroller.common.uuid.UUIDFactory;
+import com.milena.sensorcontroller.measurement.domain.Measurement;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Date;
 
 @SpringBootTest(classes = Sensor.class)
 public class SensorTest {
@@ -53,6 +56,22 @@ public class SensorTest {
                 .uuid(uuid)
                 .build();
 
+        Assert.assertEquals(Sensor.SensorStatus.OK, sensor.getStatus());
+    }
+
+    @Test
+    public void When_AddLowMeasurement_ThenStatusOk() {
+        String uuid = UUIDFactory.create();
+        Date now = new Date();
+        Measurement measurement = Measurement.builder()
+                .carbonDioxideLevel(1000)
+                .time(now)
+                .build();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+
+        sensor.addMeasurement(measurement);
         Assert.assertEquals(Sensor.SensorStatus.OK, sensor.getStatus());
     }
 }
