@@ -13,15 +13,15 @@ import java.util.Date;
 @Entity
 @Table(name = "measurements")
 @EqualsAndHashCode(callSuper = true)
-public class Measurement extends BaseEntity<Long> {
+public class Measurement extends BaseEntity<Integer> {
 
     @Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column
-    private Long sensorId;
+    private Integer sensorId;
 
     @Column
     private Date time;
@@ -30,7 +30,7 @@ public class Measurement extends BaseEntity<Long> {
     private Integer carbonDioxideLevel;
 
     @Override
-    protected Long getBusinessKey() {
+    protected Integer getBusinessKey() {
         return id;
     }
 }

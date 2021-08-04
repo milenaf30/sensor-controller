@@ -11,11 +11,11 @@ public class SensorTest {
     @Test
     public void When_CreateSameEntities_ThenCorrect() {
         Sensor sensor1 = Sensor.builder().
-                id(1L)
+                id(1)
                 .build();
 
         Sensor sensor2 = Sensor.builder()
-                .id(1L)
+                .id(1)
                 .build();
 
         Assert.assertEquals(sensor1, sensor2);
@@ -25,11 +25,11 @@ public class SensorTest {
     @Test
     public void When_CreateDifferentEntities_ThenCorrect() {
         Sensor sensor1 = Sensor.builder().
-                id(1L)
+                id(1)
                 .build();
 
         Sensor sensor2 = Sensor.builder()
-                .id(2L)
+                .id(2)
                 .build();
 
         Assert.assertNotEquals(sensor1, sensor2);

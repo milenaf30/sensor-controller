@@ -12,18 +12,18 @@ import javax.persistence.*;
 @Entity
 @Table(name = "sensors")
 @EqualsAndHashCode(callSuper = true)
-public class Sensor extends BaseEntity<Long> {
+public class Sensor extends BaseEntity<Integer> {
 
     @Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column
     private String uuid;
 
     @Override
-    protected Long getBusinessKey() {
+    protected Integer getBusinessKey() {
         return id;
     }
 

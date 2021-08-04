@@ -36,7 +36,7 @@ public class SensorAppServiceTest {
         String uuid = UUIDFactory.create();
         Sensor sensor = Sensor.builder()
                 .uuid(uuid)
-                .id(1L)
+                .id(1)
                 .build();
         when(sensorService.findByUUID(uuid)).thenReturn(sensor);
         SensorDto sensorDto = sensorAppService.getByUUID(uuid);
