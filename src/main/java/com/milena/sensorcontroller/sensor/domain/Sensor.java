@@ -66,15 +66,14 @@ public class Sensor extends BaseEntity<Integer> {
                 measurement2.isHigh()
         ) {
             status = SensorStatus.ALERT;
-        } else if (
-                measurement.getCarbonDioxideLevel() <= 2000 &&
-                        measurement1.getCarbonDioxideLevel() <= 2000 &&
-                        measurement2.getCarbonDioxideLevel() <= 2000
+        } else if (measurement.isLow() &&
+                measurement1.isLow() &&
+                measurement2.isLow()
         ) {
             status = SensorStatus.OK;
 //            measurements.add(measurement);
         }
-            measurements.add(measurement);
+        measurements.add(measurement);
     }
 
     public enum SensorStatus {

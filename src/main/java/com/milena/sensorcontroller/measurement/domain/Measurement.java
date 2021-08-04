@@ -40,4 +40,9 @@ public class Measurement extends BaseEntity<Integer> {
     public boolean isHigh() {
         return carbonDioxideLevel > 2000;
     }
+
+    @Transient
+    public boolean isLow() {
+        return !isHigh();
+    }
 }
