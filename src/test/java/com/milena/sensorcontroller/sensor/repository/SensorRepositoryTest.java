@@ -49,4 +49,15 @@ public class SensorRepositoryTest {
         sensorRepository.save(sensor2);
     }
 
+    @Test
+    public void When_FindByUUID_ThenCorrect() {
+        String uuid = UUIDFactory.create();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+        sensorRepository.save(sensor);
+
+        Sensor sensorRetrieved = sensorRepository.findByUuid(uuid);
+        Assert.assertEquals(sensor.getUuid(), sensorRetrieved.getUuid());
+    }
 }
