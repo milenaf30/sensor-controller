@@ -50,4 +50,30 @@ public class MeasurementTest {
         Assert.assertEquals(measurement.getTime(), time);
         Assert.assertEquals(measurement.getCarbonDioxideLevel(), carbonDioxideMeasure);
     }
+
+    @Test
+    public void When_CarbonDioxideHigh_ThenHigh() {
+        Integer carbonDioxideMeasure = 2001;
+        Date time = new Date();
+        Measurement measurement = Measurement.builder().
+                id(1)
+                .time(time)
+                .carbonDioxideLevel(carbonDioxideMeasure)
+                .build();
+
+        Assert.assertTrue(measurement.isHigh());
+    }
+
+    @Test
+    public void When_CarbonDioxideLow_ThenLow() {
+        Integer carbonDioxideMeasure = 1000;
+        Date time = new Date();
+        Measurement measurement = Measurement.builder().
+                id(1)
+                .time(time)
+                .carbonDioxideLevel(carbonDioxideMeasure)
+                .build();
+
+        Assert.assertTrue(measurement.isLow());
+    }
 }
