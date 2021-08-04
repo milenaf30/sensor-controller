@@ -38,14 +38,7 @@ public class Sensor extends BaseEntity<Integer> {
         return id;
     }
 
-    public SensorStatus getStatus() {
-        return status;
-    }
-
     public void addMeasurement(Measurement measurement) {
-
-        //measurement 3
-
         if (status == SensorStatus.OK && measurement.isHigh()) {
             status = SensorStatus.WARM;
             measurements.add(measurement);
@@ -53,7 +46,6 @@ public class Sensor extends BaseEntity<Integer> {
         }
 
         if (measurements.size() < 2) {
-            //state shouldn't change
             measurements.add(measurement);
             return;
         }
@@ -63,15 +55,12 @@ public class Sensor extends BaseEntity<Integer> {
 
         if (measurement.isHigh() &&
                 measurement1.isHigh() &&
-                measurement2.isHigh()
-        ) {
+                measurement2.isHigh()) {
             status = SensorStatus.ALERT;
         } else if (measurement.isLow() &&
                 measurement1.isLow() &&
-                measurement2.isLow()
-        ) {
+                measurement2.isLow()) {
             status = SensorStatus.OK;
-//            measurements.add(measurement);
         }
         measurements.add(measurement);
     }
