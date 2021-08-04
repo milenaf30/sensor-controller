@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,5 +49,19 @@ public class SensorControllerTest {
         verify(sensorAppService, times(1))
                 .getByUUID(uuidCaptor.capture());
         Assert.assertEquals(uuidCaptor.getValue(), uuid);
+    }
+
+    @Test
+    public void When_GetSensorByUUID_ThenReturnSensorDto() throws Exception {
+        String uuid = UUIDFactory.create();
+        SensorDto sensorDto = SensorDto.builder().status(Sensor.SensorStatus.OK).build();
+        when(sensorAppService.getByUUID(uuid)).thenReturn(sensorDto);
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/sensors/{uuid}", uuid))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String actualResponseBody = mvcResult.getResponse().getContentAsString();
+        assertThat(actualResponseBody).isEqualToIgnoringWhitespace(
+                objectMapper.writeValueAsString(sensorDto));
     }
 }
