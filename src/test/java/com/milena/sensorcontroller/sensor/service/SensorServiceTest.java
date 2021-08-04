@@ -1,10 +1,10 @@
 package com.milena.sensorcontroller.sensor.service;
 
 
-import com.milena.sensorcontroller.SensorControllerApplication;
 import com.milena.sensorcontroller.common.uuid.UUIDFactory;
 import com.milena.sensorcontroller.sensor.domain.Sensor;
 import com.milena.sensorcontroller.sensor.repository.SensorRepository;
+import com.milena.sensorcontroller.sensor.service.impl.SensorServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import javax.persistence.EntityNotFoundException;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = SensorControllerApplication.class)
+@SpringBootTest(classes = {SensorService.class, SensorServiceImpl.class})
 public class SensorServiceTest {
     @MockBean
     private SensorRepository sensorRepository;
