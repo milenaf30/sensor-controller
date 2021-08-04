@@ -1,4 +1,4 @@
-package com.milena.sensorcontroller.domain;
+package com.milena.sensorcontroller.sensor.domain;
 
 import com.milena.sensorcontroller.common.domain.BaseEntity;
 import lombok.AllArgsConstructor;

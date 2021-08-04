@@ -1,4 +1,4 @@
-package com.milena.sensorcontroller.domain;
+package com.milena.sensorcontroller.sensor.domain;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
