@@ -26,4 +26,10 @@ public class Sensor extends BaseEntity<Long> {
     protected Long getBusinessKey() {
         return id;
     }
+
+    public enum SensorStatus {
+        OK,
+        WARM,
+        ALERT
+    }
 }
