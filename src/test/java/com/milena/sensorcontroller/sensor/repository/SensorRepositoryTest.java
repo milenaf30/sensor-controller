@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -33,6 +34,19 @@ public class SensorRepositoryTest {
         Sensor sensorRetrieved = sensorRepository.save(sensor);
         Assert.assertEquals(sensor.getUuid(), sensorRetrieved.getUuid());
         Assert.assertNotNull(sensor.getId());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void When_InsertSameEntity_ThenFail() {
+        String uuid = UUIDFactory.create();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+        sensorRepository.save(sensor);
+        Sensor sensor2 = Sensor.builder()
+                .uuid(uuid)
+                .build();
+        sensorRepository.save(sensor2);
     }
 
 }
