@@ -58,16 +58,23 @@ public class Sensor extends BaseEntity<Integer> {
             return;
         }
 
-        Measurement measurement1 = measurements.get(1);
-        Measurement measurement2 = measurements.get(0);
+        Measurement measurement1 = measurements.get(measurements.size() - 1);
+        Measurement measurement2 = measurements.get(measurements.size() - 2);
 
         if (measurement.getCarbonDioxideLevel() > 2000 &&
                 measurement1.getCarbonDioxideLevel() > 2000 &&
                 measurement2.getCarbonDioxideLevel() > 2000
         ) {
             status = SensorStatus.ALERT;
-            measurements.add(measurement);
+        } else if (
+                measurement.getCarbonDioxideLevel() <= 2000 &&
+                        measurement1.getCarbonDioxideLevel() <= 2000 &&
+                        measurement2.getCarbonDioxideLevel() <= 2000
+        ) {
+            status = SensorStatus.OK;
+//            measurements.add(measurement);
         }
+            measurements.add(measurement);
     }
 
     public enum SensorStatus {

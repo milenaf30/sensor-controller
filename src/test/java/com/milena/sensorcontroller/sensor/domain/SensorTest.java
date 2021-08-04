@@ -125,4 +125,79 @@ public class SensorTest {
         sensor.addMeasurement(measurement);
         Assert.assertEquals(Sensor.SensorStatus.ALERT, sensor.getStatus());
     }
+
+    @Test
+    public void When_AddLowMeasurementAfterALERT_ThenStatusALERT() {
+        String uuid = UUIDFactory.create();
+        Date now = new Date();
+        Measurement highMeasurement = Measurement.builder()
+                .carbonDioxideLevel(3000)
+                .time(now)
+                .build();
+        Measurement lowMeasurement = Measurement.builder()
+                .carbonDioxideLevel(1000)
+                .time(now)
+                .build();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+
+        sensor.addMeasurement(highMeasurement);
+        sensor.addMeasurement(highMeasurement);
+        sensor.addMeasurement(highMeasurement);
+        sensor.addMeasurement(lowMeasurement);
+
+        Assert.assertEquals(Sensor.SensorStatus.ALERT, sensor.getStatus());
+    }
+
+    @Test
+    public void When_AddTwoLowMeasurementAfterALERT_ThenStatusALERT() {
+        String uuid = UUIDFactory.create();
+        Date now = new Date();
+        Measurement highMeasurement = Measurement.builder()
+                .carbonDioxideLevel(3000)
+                .time(now)
+                .build();
+        Measurement lowMeasurement = Measurement.builder()
+                .carbonDioxideLevel(1000)
+                .time(now)
+                .build();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+
+        sensor.addMeasurement(highMeasurement);
+        sensor.addMeasurement(highMeasurement);
+        sensor.addMeasurement(highMeasurement);
+        sensor.addMeasurement(lowMeasurement);
+        sensor.addMeasurement(lowMeasurement);
+
+        Assert.assertEquals(Sensor.SensorStatus.ALERT, sensor.getStatus());
+    }
+
+    @Test
+    public void When_AddThreeLowMeasurementAfterALERT_ThenStatusOK() {
+        String uuid = UUIDFactory.create();
+        Date now = new Date();
+        Measurement highMeasurement = Measurement.builder()
+                .carbonDioxideLevel(3000)
+                .time(now)
+                .build();
+        Measurement lowMeasurement = Measurement.builder()
+                .carbonDioxideLevel(1000)
+                .time(now)
+                .build();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+
+        sensor.addMeasurement(highMeasurement);
+        sensor.addMeasurement(highMeasurement);
+        sensor.addMeasurement(highMeasurement);
+        sensor.addMeasurement(lowMeasurement);
+        sensor.addMeasurement(lowMeasurement);
+        sensor.addMeasurement(lowMeasurement);
+
+        Assert.assertEquals(Sensor.SensorStatus.OK, sensor.getStatus());
+    }
 }
