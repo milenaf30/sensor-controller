@@ -1,5 +1,7 @@
 package com.milena.sensorcontroller.sensor.repository;
 
+import com.milena.sensorcontroller.common.uuid.UUIDFactory;
+import com.milena.sensorcontroller.sensor.domain.Sensor;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,4 +23,16 @@ public class SensorRepositoryTest {
     public void When_InsertDependencies_ThenCorrect() {
         Assert.assertNotNull(sensorRepository);
     }
+
+    @Test
+    public void When_InsertEntity_ThenCorrect() {
+        String uuid = UUIDFactory.create();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+        Sensor sensorRetrieved = sensorRepository.save(sensor);
+        Assert.assertEquals(sensor.getUuid(), sensorRetrieved.getUuid());
+        Assert.assertNotNull(sensor.getId());
+    }
+
 }
