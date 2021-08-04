@@ -1,8 +1,11 @@
 package com.milena.sensorcontroller.sensor.service.impl;
 
+import com.milena.sensorcontroller.sensor.domain.Sensor;
 import com.milena.sensorcontroller.sensor.repository.SensorRepository;
 import com.milena.sensorcontroller.sensor.service.SensorService;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class SensorServiceImpl implements SensorService {
@@ -13,4 +16,12 @@ public class SensorServiceImpl implements SensorService {
         this.sensorRepository = sensorRepository;
     }
 
+    @Override
+    public Sensor findByUUID(String uuid) {
+        Sensor sensor = sensorRepository.findByUuid(uuid);
+        if (sensor == null) {
+            throw new EntityNotFoundException();
+        }
+        return sensor;
+    }
 }
