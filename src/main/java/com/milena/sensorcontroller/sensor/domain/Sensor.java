@@ -27,6 +27,10 @@ public class Sensor extends BaseEntity<Integer> {
         return id;
     }
 
+    public SensorStatus getStatus() {
+        return SensorStatus.OK;
+    }
+
     public enum SensorStatus {
         OK,
         WARM,

@@ -45,4 +45,14 @@ public class SensorTest {
 
         Assert.assertEquals(sensor.getUuid(), uuid);
     }
+
+    @Test
+    public void When_GetStatus_ThenCorrect() {
+        String uuid = UUIDFactory.create();
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .build();
+
+        Assert.assertEquals(Sensor.SensorStatus.OK, sensor.getStatus());
+    }
 }
