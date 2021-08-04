@@ -35,4 +35,9 @@ public class Measurement extends BaseEntity<Integer> {
     protected Integer getBusinessKey() {
         return id;
     }
+
+    @Transient
+    public boolean isHigh() {
+        return carbonDioxideLevel > 2000;
+    }
 }

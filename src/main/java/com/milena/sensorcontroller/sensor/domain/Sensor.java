@@ -46,7 +46,7 @@ public class Sensor extends BaseEntity<Integer> {
 
         //measurement 3
 
-        if (status == SensorStatus.OK && measurement.getCarbonDioxideLevel() > 2000) {
+        if (status == SensorStatus.OK && measurement.isHigh()) {
             status = SensorStatus.WARM;
             measurements.add(measurement);
             return;
@@ -61,9 +61,9 @@ public class Sensor extends BaseEntity<Integer> {
         Measurement measurement1 = measurements.get(measurements.size() - 1);
         Measurement measurement2 = measurements.get(measurements.size() - 2);
 
-        if (measurement.getCarbonDioxideLevel() > 2000 &&
-                measurement1.getCarbonDioxideLevel() > 2000 &&
-                measurement2.getCarbonDioxideLevel() > 2000
+        if (measurement.isHigh() &&
+                measurement1.isHigh() &&
+                measurement2.isHigh()
         ) {
             status = SensorStatus.ALERT;
         } else if (
