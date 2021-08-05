@@ -172,4 +172,35 @@ public class SensorTest {
 
         Assert.assertEquals(Sensor.SensorStatus.OK, sensor.getStatus());
     }
+
+    @Test
+    public void When_AddThreeLowMeasurementAfterALERTStatus_ThenStatusOK() {
+        String uuid = UUIDFactory.create();
+
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .status(Sensor.SensorStatus.ALERT)
+                .build();
+
+        sensor.addMeasurement(lowMeasurement);
+        sensor.addMeasurement(lowMeasurement);
+        sensor.addMeasurement(lowMeasurement);
+
+        Assert.assertEquals(Sensor.SensorStatus.OK, sensor.getStatus());
+    }
+
+    @Test
+    public void When_AddTwoLowMeasurementAfterALERTStatus_ThenStatusOK() {
+        String uuid = UUIDFactory.create();
+
+        Sensor sensor = Sensor.builder()
+                .uuid(uuid)
+                .status(Sensor.SensorStatus.ALERT)
+                .build();
+
+        sensor.addMeasurement(lowMeasurement);
+        sensor.addMeasurement(lowMeasurement);
+
+        Assert.assertEquals(Sensor.SensorStatus.ALERT, sensor.getStatus());
+    }
 }

@@ -40,30 +40,49 @@ public class Sensor extends BaseEntity<Integer> {
 
     public void addMeasurement(Measurement measurement) {
         measurement.setSensor(this);
-        if (status == SensorStatus.OK && measurement.isHigh()) {
+        measurements.add(measurement);
+
+        calculateStatus();
+    }
+
+    private void calculateStatus() {
+        Measurement measurement = measurements.get(measurements.size() - 1);
+        if (isOk() && measurement.isHigh()) {
             status = SensorStatus.WARM;
-            measurements.add(measurement);
             return;
         }
+        if (isAlert() && measurement.isHigh()) return;
+        if (isOk() && measurement.isLow()) return;
+        if (!haveEnoughData()) return;
 
-        if (measurements.size() < 2) {
-            measurements.add(measurement);
-            return;
-        }
-
-        Measurement measurement1 = measurements.get(measurements.size() - 1);
+        Measurement measurement3 = measurements.get(measurements.size() - 1);
         Measurement measurement2 = measurements.get(measurements.size() - 2);
+        Measurement measurement1 = measurements.get(measurements.size() - 3);
 
-        if (measurement.isHigh() &&
-                measurement1.isHigh() &&
-                measurement2.isHigh()) {
+        if (measurement3.isHigh() &&
+                measurement2.isHigh() &&
+                measurement1.isHigh()) {
             status = SensorStatus.ALERT;
-        } else if (measurement.isLow() &&
-                measurement1.isLow() &&
-                measurement2.isLow()) {
+            return;
+        }
+
+        if (measurement3.isLow() &&
+                measurement2.isLow() &&
+                measurement1.isLow()) {
             status = SensorStatus.OK;
         }
-        measurements.add(measurement);
+    }
+
+    private boolean haveEnoughData() {
+        return measurements.size() >= 3;
+    }
+
+    private boolean isAlert() {
+        return status == SensorStatus.ALERT;
+    }
+
+    private boolean isOk() {
+        return status == SensorStatus.OK;
     }
 
     public enum SensorStatus {
