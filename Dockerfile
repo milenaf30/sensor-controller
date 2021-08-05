@@ -21,6 +21,6 @@ RUN ./mvnw compile
 ARG environmentParam
 ENV ENV=$environmentParam
 
-ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n","-Xdebug","-jar","./target/sensor-0.0.1-SNAPSHOT.jar","--spring.profiles.active=${ENV}"]
+ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n","-Xdebug","-jar","./target/sensor-controller-0.0.1-SNAPSHOT.jar","--spring.profiles.active=${ENV}"]
 
 EXPOSE 8090
