@@ -2,6 +2,7 @@ package com.milena.sensorcontroller.sensor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.milena.sensorcontroller.common.uuid.UUIDFactory;
+import com.milena.sensorcontroller.measurement.dto.MeasurementDto;
 import com.milena.sensorcontroller.sensor.application.SensorAppService;
 import com.milena.sensorcontroller.sensor.domain.Sensor;
 import com.milena.sensorcontroller.sensor.dto.SensorDto;
@@ -11,14 +12,17 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(SensorController.class)
@@ -72,7 +76,19 @@ public class SensorControllerTest {
         String uuid = UUIDFactory.create();
         when(sensorAppService.getByUUID(uuid)).thenThrow(new EntityNotFoundException());
         mockMvc.perform(get("/api/v1/sensors/{uuid}", uuid))
-                .andExpect(status().isNotFound())
-                .andReturn();
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void When_PostSensorMeasurement_ThenOk() throws Exception {
+        mockMvc.perform(post("/api/v1/sensors/uuid/measurements")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(
+                        MeasurementDto.builder()
+                                .carbonDioxideLevel(100)
+                                .time(new Date())
+                                .build()
+                )))
+                .andExpect(status().isOk());
     }
 }
