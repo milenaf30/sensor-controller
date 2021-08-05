@@ -29,7 +29,7 @@ public class Sensor extends BaseEntity<Integer> {
     @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Measurement> measurements = new ArrayList<>();
 
-    @Transient
+    @Column
     @Builder.Default
     private SensorStatus status = SensorStatus.OK;
 

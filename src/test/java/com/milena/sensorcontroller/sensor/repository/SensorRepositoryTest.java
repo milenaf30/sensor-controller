@@ -32,6 +32,7 @@ public class SensorRepositoryTest {
                 .build();
         Sensor sensorRetrieved = sensorRepository.save(sensor);
         Assert.assertEquals(sensor.getUuid(), sensorRetrieved.getUuid());
+        Assert.assertEquals(sensor.getStatus(), Sensor.SensorStatus.OK);
         Assert.assertNotNull(sensor.getId());
     }
 
