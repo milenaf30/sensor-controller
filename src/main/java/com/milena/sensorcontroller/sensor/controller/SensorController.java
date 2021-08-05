@@ -34,4 +34,10 @@ public class SensorController extends BaseController {
         sensorAppService.saveMeasurement(measurementDto);
         return HttpStatus.OK;
     }
+
+    @GetMapping("/{uuid}/metrics")
+    @ApiOperation(value = "Get the average and maximum value of the last 30 days.")
+    public HttpStatus getMetricsByUUID(@PathVariable("uuid") String uuid) {
+        return HttpStatus.OK;
+    }
 }

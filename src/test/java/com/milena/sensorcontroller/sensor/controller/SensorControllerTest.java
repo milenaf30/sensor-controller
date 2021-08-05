@@ -116,4 +116,11 @@ public class SensorControllerTest {
                 .saveMeasurement(measurementDtoCaptor.capture());
         Assert.assertEquals(measurementDtoCaptor.getValue().getUuid(), uuid);
     }
+
+    @Test
+    public void When_GetSensorMetrics_ThenOk() throws Exception {
+        mockMvc.perform(get("/api/v1/sensors/uuid/metrics"))
+                .andExpect(status().isOk());
+    }
+
 }
