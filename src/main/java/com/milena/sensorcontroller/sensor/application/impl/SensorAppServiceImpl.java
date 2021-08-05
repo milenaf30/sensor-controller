@@ -4,6 +4,7 @@ import com.milena.sensorcontroller.measurement.domain.Measurement;
 import com.milena.sensorcontroller.measurement.dto.MeasurementDto;
 import com.milena.sensorcontroller.sensor.application.SensorAppService;
 import com.milena.sensorcontroller.sensor.domain.Sensor;
+import com.milena.sensorcontroller.sensor.dto.MetricsDto;
 import com.milena.sensorcontroller.sensor.dto.SensorDto;
 import com.milena.sensorcontroller.sensor.service.SensorService;
 import org.slf4j.Logger;
@@ -56,6 +57,11 @@ public class SensorAppServiceImpl implements SensorAppService {
             logger.error(ex.getMessage());
             throw ex;
         }
+    }
+
+    @Override
+    public MetricsDto getMetrics(String uuid) {
+        return MetricsDto.builder().build();
     }
 
     private Sensor getOrCreateAndSaveSensorByUUID(String uuid) {

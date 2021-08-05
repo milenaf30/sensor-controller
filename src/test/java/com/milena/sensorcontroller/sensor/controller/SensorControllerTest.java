@@ -5,6 +5,7 @@ import com.milena.sensorcontroller.common.uuid.UUIDFactory;
 import com.milena.sensorcontroller.measurement.dto.MeasurementDto;
 import com.milena.sensorcontroller.sensor.application.SensorAppService;
 import com.milena.sensorcontroller.sensor.domain.Sensor;
+import com.milena.sensorcontroller.sensor.dto.MetricsDto;
 import com.milena.sensorcontroller.sensor.dto.SensorDto;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -121,6 +122,29 @@ public class SensorControllerTest {
     public void When_GetSensorMetrics_ThenOk() throws Exception {
         mockMvc.perform(get("/api/v1/sensors/uuid/metrics"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void When_GetSensorMetrics_ThenReturnCorrectData() throws Exception {
+        String uuid = UUIDFactory.create();
+        MetricsDto metricsDto = MetricsDto.builder().build();
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/sensors/{uuid}/metrics", uuid))
+                .andExpect(status().isOk())
+                .andReturn();
+        String actualResponseBody = mvcResult.getResponse().getContentAsString();
+        assertThat(actualResponseBody).isEqualToIgnoringWhitespace(
+                objectMapper.writeValueAsString(metricsDto));
+    }
+
+    @Test
+    public void When_GetSensorMetrics_ThenCallToAppService() throws Exception {
+        String uuid = UUIDFactory.create();
+        mockMvc.perform(get("/api/v1/sensors/{uuid}/metrics", uuid))
+                .andExpect(status().isOk());
+        ArgumentCaptor<String> uuidCaptor = ArgumentCaptor.forClass(String.class);
+        verify(sensorAppService, times(1))
+                .getMetrics(uuidCaptor.capture());
+        Assert.assertEquals(uuidCaptor.getValue(), uuid);
     }
 
 }

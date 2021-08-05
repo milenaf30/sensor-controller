@@ -3,6 +3,7 @@ package com.milena.sensorcontroller.sensor.controller;
 import com.milena.sensorcontroller.common.controller.BaseController;
 import com.milena.sensorcontroller.measurement.dto.MeasurementDto;
 import com.milena.sensorcontroller.sensor.application.SensorAppService;
+import com.milena.sensorcontroller.sensor.dto.MetricsDto;
 import com.milena.sensorcontroller.sensor.dto.SensorDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +38,7 @@ public class SensorController extends BaseController {
 
     @GetMapping("/{uuid}/metrics")
     @ApiOperation(value = "Get the average and maximum value of the last 30 days.")
-    public HttpStatus getMetricsByUUID(@PathVariable("uuid") String uuid) {
-        return HttpStatus.OK;
+    public MetricsDto getMetricsByUUID(@PathVariable("uuid") String uuid) {
+        return sensorAppService.getMetrics(uuid);
     }
 }
