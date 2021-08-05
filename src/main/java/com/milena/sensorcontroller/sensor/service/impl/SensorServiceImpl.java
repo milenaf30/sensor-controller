@@ -24,4 +24,9 @@ public class SensorServiceImpl implements SensorService {
         }
         return sensor;
     }
+
+    @Override
+    public Sensor save(Sensor sensor) {
+        return sensorRepository.save(sensor);
+    }
 }

@@ -1,5 +1,6 @@
 package com.milena.sensorcontroller.sensor.application.impl;
 
+import com.milena.sensorcontroller.measurement.domain.Measurement;
 import com.milena.sensorcontroller.measurement.dto.MeasurementDto;
 import com.milena.sensorcontroller.sensor.application.SensorAppService;
 import com.milena.sensorcontroller.sensor.domain.Sensor;
@@ -8,6 +9,8 @@ import com.milena.sensorcontroller.sensor.service.SensorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class SensorAppServiceImpl implements SensorAppService {
@@ -38,6 +41,31 @@ public class SensorAppServiceImpl implements SensorAppService {
 
     @Override
     public void saveMeasurement(MeasurementDto measurementDto) {
+        logger.info(String.format("Saving measurement of sensor with uuid %s", measurementDto.getUuid()));
+        try {
+            Sensor sensor = getOrCreateAndSaveSensorByUUID(measurementDto.getUuid());
+            Measurement measurement = Measurement.builder()
+                    .carbonDioxideLevel(measurementDto.getCarbonDioxideLevel())
+                    .time(measurementDto.getTime())
+                    .build();
+            sensor.addMeasurement(measurement);
+            sensorService.save(sensor);
+            logger.info(String.format("Measurement of sensor with uuid %s saved", measurementDto.getUuid()));
+        } catch (Exception ex) {
+            logger.error(String.format("Error saving measurement of sensor with uuid %s", measurementDto.getUuid()));
+            logger.error(ex.getMessage());
+            throw ex;
+        }
+    }
 
+    private Sensor getOrCreateAndSaveSensorByUUID(String uuid) {
+        try {
+            return sensorService.findByUUID(uuid);
+        } catch (EntityNotFoundException ex) {
+            Sensor sensor = Sensor.builder()
+                    .uuid(uuid)
+                    .build();
+            return sensorService.save(sensor);
+        }
     }
 }

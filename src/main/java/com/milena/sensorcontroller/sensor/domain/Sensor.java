@@ -39,6 +39,7 @@ public class Sensor extends BaseEntity<Integer> {
     }
 
     public void addMeasurement(Measurement measurement) {
+        measurement.setSensor(this);
         if (status == SensorStatus.OK && measurement.isHigh()) {
             status = SensorStatus.WARM;
             measurements.add(measurement);
