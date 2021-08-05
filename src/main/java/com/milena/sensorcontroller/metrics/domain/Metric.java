@@ -1,6 +1,7 @@
 package com.milena.sensorcontroller.metrics.domain;
 
 import com.milena.sensorcontroller.common.domain.BaseEntity;
+import com.milena.sensorcontroller.measurement.domain.Measurement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,17 +30,40 @@ public class Metric extends BaseEntity<Integer> {
     @Column
     private Integer sum;
 
+    @Builder.Default
     @Column(name = "total_records")
-    private Integer totalRecords;
+    private Integer totalRecords = 1;
 
     @Column
     private Integer max;
 
+    @Temporal(TemporalType.DATE)
     @Column
     private Date date;
 
     @Override
     protected Integer getBusinessKey() {
         return id;
+    }
+
+    public void addMeasurement(Measurement measurement) {
+        Integer carbonDioxideLevel = measurement.getCarbonDioxideLevel();
+        setMax(carbonDioxideLevel);
+        setSum(carbonDioxideLevel);
+        setTotalRecords(carbonDioxideLevel);
+    }
+
+    public void setMax(Integer carbonDioxideLevel) {
+        if (carbonDioxideLevel > max) {
+            max = carbonDioxideLevel;
+        }
+    }
+
+    public void setSum(Integer carbonDioxideLevel) {
+        sum += sum;
+    }
+
+    public void setTotalRecords(Integer carbonDioxideLevel) {
+        totalRecords += 1;
     }
 }
