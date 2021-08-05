@@ -30,6 +30,8 @@ public class SensorController extends BaseController {
     @ApiOperation(value = "Save the carbon dioxide level of the sensor with uuid.")
     public HttpStatus saveMeasurement(@PathVariable("uuid") String uuid,
                                       @RequestBody MeasurementDto measurementDto) {
+        measurementDto.setUuid(uuid);
+        sensorAppService.saveMeasurement(measurementDto);
         return HttpStatus.OK;
     }
 }

@@ -91,4 +91,29 @@ public class SensorControllerTest {
                 )))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void When_PostSensorMeasurement_ThenCallToAppService() throws Exception {
+        String uuid = UUIDFactory.create();
+        MeasurementDto measurementDto = MeasurementDto.builder()
+                .carbonDioxideLevel(100)
+                .time(new Date())
+                .uuid(uuid)
+                .build();
+        doNothing().when(sensorAppService).saveMeasurement(measurementDto);
+        mockMvc.perform(post("/api/v1/sensors/{uuid}/measurements", uuid)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(
+                        MeasurementDto.builder()
+                                .carbonDioxideLevel(100)
+                                .time(new Date())
+                                .build()
+                )))
+                .andExpect(status().isOk());
+
+        ArgumentCaptor<MeasurementDto> measurementDtoCaptor = ArgumentCaptor.forClass(MeasurementDto.class);
+        verify(sensorAppService, times(1))
+                .saveMeasurement(measurementDtoCaptor.capture());
+        Assert.assertEquals(measurementDtoCaptor.getValue().getUuid(), uuid);
+    }
 }

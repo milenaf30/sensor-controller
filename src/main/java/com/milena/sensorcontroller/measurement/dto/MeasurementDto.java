@@ -1,5 +1,6 @@
 package com.milena.sensorcontroller.measurement.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,4 +20,7 @@ public class MeasurementDto {
 
     @JsonProperty("time")
     private Date time;
+
+    @JsonIgnore
+    private String uuid;
 }

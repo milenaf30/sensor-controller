@@ -1,5 +1,6 @@
 package com.milena.sensorcontroller.sensor.application.impl;
 
+import com.milena.sensorcontroller.measurement.dto.MeasurementDto;
 import com.milena.sensorcontroller.sensor.application.SensorAppService;
 import com.milena.sensorcontroller.sensor.domain.Sensor;
 import com.milena.sensorcontroller.sensor.dto.SensorDto;
@@ -33,5 +34,10 @@ public class SensorAppServiceImpl implements SensorAppService {
             logger.error(ex.getMessage());
             throw ex;
         }
+    }
+
+    @Override
+    public void saveMeasurement(MeasurementDto measurementDto) {
+
     }
 }
