@@ -1,5 +1,6 @@
 package com.milena.sensorcontroller.sensor.controller;
 
+import com.milena.sensorcontroller.common.controller.BaseController;
 import com.milena.sensorcontroller.sensor.application.SensorAppService;
 import com.milena.sensorcontroller.sensor.dto.SensorDto;
 import io.swagger.annotations.Api;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/sensors")
 @Api(tags = "Sensor")
-public class SensorController {
+public class SensorController extends BaseController {
 
     private final SensorAppService sensorAppService;
 

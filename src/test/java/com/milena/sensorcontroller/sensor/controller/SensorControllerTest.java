@@ -14,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import javax.persistence.EntityNotFoundException;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -63,5 +65,14 @@ public class SensorControllerTest {
         String actualResponseBody = mvcResult.getResponse().getContentAsString();
         assertThat(actualResponseBody).isEqualToIgnoringWhitespace(
                 objectMapper.writeValueAsString(sensorDto));
+    }
+
+    @Test
+    public void When_GetSensorByInexistentUUID_ThenNotFound() throws Exception {
+        String uuid = UUIDFactory.create();
+        when(sensorAppService.getByUUID(uuid)).thenThrow(new EntityNotFoundException());
+        mockMvc.perform(get("/api/v1/sensors/{uuid}", uuid))
+                .andExpect(status().isNotFound())
+                .andReturn();
     }
 }
