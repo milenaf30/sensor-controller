@@ -1,5 +1,6 @@
 package com.milena.sensorcontroller.measurement.domain;
 
+import com.milena.sensorcontroller.common.date.DateFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +41,7 @@ public class MeasurementTest {
     @Test
     public void When_CreateEntity_ThenCorrect() {
         Integer carbonDioxideMeasure = 2000;
-        Date time = new Date();
+        Date time = DateFactory.now();
         Measurement measurement = Measurement.builder().
                 id(1)
                 .time(time)
@@ -54,7 +55,7 @@ public class MeasurementTest {
     @Test
     public void When_CarbonDioxideHigh_ThenHigh() {
         Integer carbonDioxideMeasure = 2001;
-        Date time = new Date();
+        Date time = DateFactory.now();
         Measurement measurement = Measurement.builder().
                 id(1)
                 .time(time)
@@ -67,7 +68,7 @@ public class MeasurementTest {
     @Test
     public void When_CarbonDioxideLow_ThenLow() {
         Integer carbonDioxideMeasure = 1000;
-        Date time = new Date();
+        Date time = DateFactory.now();
         Measurement measurement = Measurement.builder().
                 id(1)
                 .time(time)

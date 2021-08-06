@@ -42,7 +42,7 @@ public class MetricRepositoryTest {
                 .sensorId(sensorRetrieved.getId())
                 .totalRecords(1)
                 .sum(200)
-                .date(new Date())
+                .date(DateFactory.now())
                 .build();
         Metric metricRetrieved = metricRepository.save(metric);
         Assert.assertNotNull(metric.getId());

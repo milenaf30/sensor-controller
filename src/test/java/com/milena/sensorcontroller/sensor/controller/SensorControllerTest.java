@@ -1,6 +1,7 @@
 package com.milena.sensorcontroller.sensor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.milena.sensorcontroller.common.date.DateFactory;
 import com.milena.sensorcontroller.common.uuid.UUIDFactory;
 import com.milena.sensorcontroller.measurement.dto.MeasurementDto;
 import com.milena.sensorcontroller.sensor.application.SensorAppService;
@@ -18,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -87,7 +87,7 @@ public class SensorControllerTest {
                 .content(objectMapper.writeValueAsString(
                         MeasurementDto.builder()
                                 .carbonDioxideLevel(100)
-                                .time(new Date())
+                                .time(DateFactory.now())
                                 .build()
                 )))
                 .andExpect(status().isOk());
@@ -98,7 +98,7 @@ public class SensorControllerTest {
         String uuid = UUIDFactory.create();
         MeasurementDto measurementDto = MeasurementDto.builder()
                 .carbonDioxideLevel(100)
-                .time(new Date())
+                .time(DateFactory.now())
                 .uuid(uuid)
                 .build();
         doNothing().when(sensorAppService).saveMeasurement(measurementDto);
@@ -107,7 +107,7 @@ public class SensorControllerTest {
                 .content(objectMapper.writeValueAsString(
                         MeasurementDto.builder()
                                 .carbonDioxideLevel(100)
-                                .time(new Date())
+                                .time(DateFactory.now())
                                 .build()
                 )))
                 .andExpect(status().isOk());

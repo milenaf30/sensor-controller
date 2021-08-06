@@ -1,5 +1,6 @@
 package com.milena.sensorcontroller.metric.domain;
 
+import com.milena.sensorcontroller.common.date.DateFactory;
 import com.milena.sensorcontroller.measurement.domain.Measurement;
 import com.milena.sensorcontroller.metrics.domain.Metric;
 import com.milena.sensorcontroller.sensor.domain.Sensor;
@@ -42,7 +43,7 @@ public class MetricTest {
 
     @Test
     public void When_CreateEntity_ThenCorrect() {
-        Date time = new Date();
+        Date time = DateFactory.now();
         Integer carbonDioxideLevel = 2000;
         Sensor sensor = Sensor.builder()
                 .uuid("uuid")
@@ -67,7 +68,7 @@ public class MetricTest {
 
     @Test
     public void When_AddMeasurementInNonInitializedMetric_ThenCorrect() {
-        Date time = new Date();
+        Date time = DateFactory.now();
         Integer carbonDioxideLevel = 2000;
         Sensor sensor = Sensor.builder()
                 .uuid("uuid")

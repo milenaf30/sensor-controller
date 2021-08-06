@@ -1,5 +1,6 @@
 package com.milena.sensorcontroller.sensor.domain;
 
+import com.milena.sensorcontroller.common.date.DateFactory;
 import com.milena.sensorcontroller.common.uuid.UUIDFactory;
 import com.milena.sensorcontroller.measurement.domain.Measurement;
 import org.junit.Assert;
@@ -17,7 +18,7 @@ public class SensorTest {
 
     @BeforeEach
     public void setUp() {
-        Date now = new Date();
+        Date now = DateFactory.now();
         highMeasurement = Measurement.builder()
                 .carbonDioxideLevel(3000)
                 .time(now)
