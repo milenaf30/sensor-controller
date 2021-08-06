@@ -2,7 +2,6 @@ package com.milena.sensorcontroller.sensor.application.impl;
 
 import com.milena.sensorcontroller.measurement.domain.Measurement;
 import com.milena.sensorcontroller.measurement.dto.MeasurementDto;
-import com.milena.sensorcontroller.metrics.domain.Metric;
 import com.milena.sensorcontroller.metrics.service.MetricService;
 import com.milena.sensorcontroller.sensor.application.SensorAppService;
 import com.milena.sensorcontroller.sensor.domain.Sensor;
@@ -55,19 +54,7 @@ public class SensorAppServiceImpl implements SensorAppService {
                     .time(measurementDto.getTime())
                     .build();
             sensor.addMeasurement(measurement);
-            Metric metric = metricService.findByDateAndSensorId(measurementDto.getTime(), measurement.getSensorIdFromSensor());
-            if (metric != null) {
-                metric.addMeasurement(measurement);
-            } else {
-                metric = Metric.builder()
-                        .sensorId(sensor.getId())
-                        .date(measurement.getTime())
-                        .max(measurement.getCarbonDioxideLevel())
-                        .sum(measurement.getCarbonDioxideLevel())
-                        .sensorId(sensor.getId())
-                        .build();
-            }
-            metricService.save(metric);
+            metricService.createOrUpdateDailyMetric(measurement);
             sensorService.save(sensor);
             logger.info(String.format("Measurement of sensor with uuid %s saved", measurementDto.getUuid()));
         } catch (Exception ex) {
@@ -82,7 +69,7 @@ public class SensorAppServiceImpl implements SensorAppService {
         logger.info(String.format("Getting metrics of sensor with uuid %s", uuid));
         try {
             Sensor sensor = sensorService.findByUUID(uuid);
-            MetricsDto metricsDto = MetricsDto.builder().build();
+            MetricsDto metricsDto = calculateLast30DaysMetrics(sensor);
             logger.info(String.format("Metrics of sensor with uuid %s saved", uuid));
             return metricsDto;
         } catch (Exception ex) {
@@ -90,6 +77,16 @@ public class SensorAppServiceImpl implements SensorAppService {
             logger.error(ex.getMessage());
             throw ex;
         }
+    }
+
+    private MetricsDto calculateLast30DaysMetrics(Sensor sensor) {
+        Integer max = metricService.getMaxLast30DaysFromSensorId(sensor.getId());
+        Integer sum = metricService.getSumLast30DaysFromSensorId(sensor.getId());
+        Integer totalRecords = metricService.getTotalCountLast30DaysFromSensorId(sensor.getId());
+        return MetricsDto.builder()
+                .avgLast30Days(sum / totalRecords)
+                .maxLast30Days(max)
+                .build();
     }
 
     private Sensor getOrCreateAndSaveSensorByUUID(String uuid) {

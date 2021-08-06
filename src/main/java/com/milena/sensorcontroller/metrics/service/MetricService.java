@@ -1,11 +1,13 @@
 package com.milena.sensorcontroller.metrics.service;
 
-import com.milena.sensorcontroller.metrics.domain.Metric;
-
-import java.util.Date;
+import com.milena.sensorcontroller.measurement.domain.Measurement;
 
 public interface MetricService {
-    Metric findByDateAndSensorId(Date date, Integer sensorId);
+    Integer getMaxLast30DaysFromSensorId(Integer sensorId);
 
-    Metric save(Metric metric);
+    Integer getSumLast30DaysFromSensorId(Integer sensorId);
+
+    Integer getTotalCountLast30DaysFromSensorId(Integer sensorId);
+
+    void createOrUpdateDailyMetric(Measurement measurement);
 }
