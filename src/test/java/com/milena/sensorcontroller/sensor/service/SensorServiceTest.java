@@ -70,4 +70,31 @@ public class SensorServiceTest {
         when(sensorRepository.findByUuid(uuid)).thenReturn(sensor);
         sensorService.findByUUID(anotherUuid);
     }
+
+    @Test
+    public void When_getSensor_ThenCreateCorrect() {
+        String uuid = UUIDFactory.create();
+        Sensor sensor = Sensor.builder()
+                .id(1)
+                .uuid(uuid)
+                .build();
+
+        when(sensorRepository.findByUuid(uuid)).thenReturn(sensor);
+
+        ArgumentCaptor<Sensor> sensorCaptor = ArgumentCaptor.forClass(Sensor.class);
+        verify(sensorRepository, times(0)).save(sensorCaptor.capture());
+    }
+
+    @Test
+    public void When_createSensor_ThenCreateCorrect() {
+        String uuid = UUIDFactory.create();
+
+        when(sensorRepository.findByUuid(uuid)).thenReturn(null);
+
+        Sensor sensorRetrieved = sensorService.getOrCreateSensor(uuid);
+
+        ArgumentCaptor<Sensor> sensorCaptor = ArgumentCaptor.forClass(Sensor.class);
+
+        verify(sensorRepository, times(1)).save(sensorCaptor.capture());
+    }
 }

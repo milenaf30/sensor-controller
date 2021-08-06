@@ -29,4 +29,13 @@ public class SensorServiceImpl implements SensorService {
     public Sensor save(Sensor sensor) {
         return sensorRepository.save(sensor);
     }
+
+    @Override
+    public Sensor getOrCreateSensor(String uuid) {
+        Sensor sensor = sensorRepository.findByUuid(uuid);
+        if (sensor != null) {
+            return sensor;
+        }
+        return sensorRepository.save(Sensor.builder().uuid(uuid).build());
+    }
 }

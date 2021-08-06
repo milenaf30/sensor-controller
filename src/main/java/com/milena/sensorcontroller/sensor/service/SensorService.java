@@ -6,4 +6,6 @@ public interface SensorService {
     Sensor findByUUID(String uuid);
 
     Sensor save(Sensor sensor);
+
+    Sensor getOrCreateSensor(String uuid);
 }
