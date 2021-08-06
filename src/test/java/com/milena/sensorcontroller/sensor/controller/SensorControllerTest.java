@@ -128,6 +128,8 @@ public class SensorControllerTest {
     public void When_GetSensorMetrics_ThenReturnCorrectData() throws Exception {
         String uuid = UUIDFactory.create();
         MetricsDto metricsDto = MetricsDto.builder().build();
+        when(sensorAppService.getMetrics(uuid)).thenReturn(metricsDto);
+
         MvcResult mvcResult = mockMvc.perform(get("/api/v1/sensors/{uuid}/metrics", uuid))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -139,8 +141,11 @@ public class SensorControllerTest {
     @Test
     public void When_GetSensorMetrics_ThenCallToAppService() throws Exception {
         String uuid = UUIDFactory.create();
+        when(sensorAppService.getMetrics(uuid)).thenReturn(MetricsDto.builder().build());
+
         mockMvc.perform(get("/api/v1/sensors/{uuid}/metrics", uuid))
                 .andExpect(status().isOk());
+
         ArgumentCaptor<String> uuidCaptor = ArgumentCaptor.forClass(String.class);
         verify(sensorAppService, times(1))
                 .getMetrics(uuidCaptor.capture());
