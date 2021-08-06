@@ -156,4 +156,44 @@ public class MetricRepositoryTest {
 
         Assert.assertEquals(Integer.valueOf(2), totalRecords);
     }
+
+    @Test
+    public void When_FindByDateAndSensorId_ThenCorrect() {
+        Sensor sensor = Sensor.builder().uuid(UUIDFactory.create()).build();
+        Date today = DateFactory.now();
+        Date yesterday = DateFactory.yesterday();
+        Integer todayDioxideLevel = 2000;
+        Integer yesterdayCarbonDioxideLevel = 4000;
+        Sensor sensorRetrieved = testEntityManager.persist(sensor);
+
+        Measurement measurement = Measurement.builder()
+                .time(today)
+                .carbonDioxideLevel(todayDioxideLevel)
+                .sensor(sensorRetrieved)
+                .build();
+        Measurement measurement2 = Measurement.builder()
+                .time(yesterday)
+                .carbonDioxideLevel(yesterdayCarbonDioxideLevel)
+                .sensor(sensorRetrieved)
+                .build();
+
+        Metric metric = Metric.builder()
+                .measurement(measurement)
+                .build();
+        metricRepository.save(metric);
+
+        Metric metric2 = Metric.builder()
+                .measurement(measurement2)
+                .build();
+        metricRepository.save(metric2);
+
+        Metric todayMetric = metricRepository.findByDateAndSensorId(today, sensor.getId());
+        Metric yesterdayMetric = metricRepository.findByDateAndSensorId(yesterday, sensor.getId());
+
+        Assert.assertNotNull(todayMetric);
+        Assert.assertEquals(todayDioxideLevel, todayMetric.getSum());
+
+        Assert.assertNotNull(yesterdayMetric);
+        Assert.assertEquals(yesterdayCarbonDioxideLevel, yesterdayMetric.getSum());
+    }
 }
