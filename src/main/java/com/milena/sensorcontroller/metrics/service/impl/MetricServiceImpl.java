@@ -25,4 +25,19 @@ public class MetricServiceImpl implements MetricService {
     public Metric save(Metric metric) {
         return metricRepository.save(metric);
     }
+
+    @Override
+    public Integer getMaxLast30DaysFromSensorId(Integer sensorId) {
+        return metricRepository.findMaxLast30DaysFromSensorId(sensorId);
+    }
+
+    @Override
+    public Integer getSumLast30DaysFromSensorId(Integer sensorId) {
+        return metricRepository.findSumLast30DaysFromSensorId(sensorId);
+    }
+
+    @Override
+    public Integer getTotalCountLast30DaysFromSensorId(Integer sensorId) {
+        return metricRepository.findTotalRecordsLast30DaysFromSensorId(sensorId);
+    }
 }
