@@ -45,4 +45,9 @@ public class Measurement extends BaseEntity<Integer> {
     public boolean isLow() {
         return !isHigh();
     }
+
+    @Transient
+    public Integer getSensorIdFromSensor() {
+        return sensor.getId();
+    }
 }

@@ -2,6 +2,7 @@ package com.milena.sensorcontroller.sensor.application.impl;
 
 import com.milena.sensorcontroller.measurement.domain.Measurement;
 import com.milena.sensorcontroller.measurement.dto.MeasurementDto;
+import com.milena.sensorcontroller.metrics.service.MetricService;
 import com.milena.sensorcontroller.sensor.application.SensorAppService;
 import com.milena.sensorcontroller.sensor.domain.Sensor;
 import com.milena.sensorcontroller.sensor.dto.MetricsDto;
@@ -18,9 +19,12 @@ public class SensorAppServiceImpl implements SensorAppService {
 
     Logger logger = LoggerFactory.getLogger(SensorAppServiceImpl.class);
     private final SensorService sensorService;
+    private final MetricService metricService;
 
-    public SensorAppServiceImpl(SensorService sensorService) {
+    public SensorAppServiceImpl(SensorService sensorService,
+                                MetricService metricService) {
         this.sensorService = sensorService;
+        this.metricService = metricService;
     }
 
     @Override
@@ -50,6 +54,7 @@ public class SensorAppServiceImpl implements SensorAppService {
                     .time(measurementDto.getTime())
                     .build();
             sensor.addMeasurement(measurement);
+            metricService.createOrUpdateDailyMetric(measurement);
             sensorService.save(sensor);
             logger.info(String.format("Measurement of sensor with uuid %s saved", measurementDto.getUuid()));
         } catch (Exception ex) {
@@ -61,7 +66,27 @@ public class SensorAppServiceImpl implements SensorAppService {
 
     @Override
     public MetricsDto getMetrics(String uuid) {
-        return MetricsDto.builder().build();
+        logger.info(String.format("Getting metrics of sensor with uuid %s", uuid));
+        try {
+            Sensor sensor = sensorService.findByUUID(uuid);
+            MetricsDto metricsDto = calculateLast30DaysMetrics(sensor);
+            logger.info(String.format("Metrics of sensor with uuid %s saved", uuid));
+            return metricsDto;
+        } catch (Exception ex) {
+            logger.error(String.format("Error getting metrics of sensor with uuid %s", uuid));
+            logger.error(ex.getMessage());
+            throw ex;
+        }
+    }
+
+    private MetricsDto calculateLast30DaysMetrics(Sensor sensor) {
+        Integer max = metricService.getMaxLast30DaysFromSensorId(sensor.getId());
+        Integer sum = metricService.getSumLast30DaysFromSensorId(sensor.getId());
+        Integer totalRecords = metricService.getTotalCountLast30DaysFromSensorId(sensor.getId());
+        return MetricsDto.builder()
+                .avgLast30Days(sum / totalRecords)
+                .maxLast30Days(max)
+                .build();
     }
 
     private Sensor getOrCreateAndSaveSensorByUUID(String uuid) {

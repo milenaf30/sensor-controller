@@ -13,9 +13,11 @@ import lombok.NoArgsConstructor;
 public class MetricsDto {
 
     @JsonProperty("maxLast30Days")
+    @Builder.Default
     private Integer maxLast30Days = 0;
 
     @JsonProperty("avgLast30Days")
+    @Builder.Default
     private Integer avgLast30Days = 0;
 
 }
