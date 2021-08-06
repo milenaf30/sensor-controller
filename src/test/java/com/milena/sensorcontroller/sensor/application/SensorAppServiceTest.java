@@ -1,7 +1,6 @@
 package com.milena.sensorcontroller.sensor.application;
 
 import com.milena.sensorcontroller.common.uuid.UUIDFactory;
-import com.milena.sensorcontroller.sensor.application.impl.SensorAppServiceImpl;
 import com.milena.sensorcontroller.sensor.domain.Sensor;
 import com.milena.sensorcontroller.sensor.dto.SensorDto;
 import com.milena.sensorcontroller.sensor.service.SensorService;
@@ -16,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {SensorAppService.class, SensorAppServiceImpl.class})
+@SpringBootTest
 public class SensorAppServiceTest {
 
     @MockBean
